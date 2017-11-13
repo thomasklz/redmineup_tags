@@ -1,0 +1,17 @@
+== Redmine Tags plugin changelog
+
+Redmine Tags plugin - Tags board plugin for redmine
+Copyright (C) 2011-2017 RedmineUP
+http://www.redmineup.com/
+
+== 2017-09-21 v2.0.1
+
+* Fixed issue import error
+
+== 2017-07-24 v2.0.0
+
+* select2 control
+* redmine_crm gem for tags
+* Admin settings link
+* Alphabet sorting view for list
+* Merging tags fixes

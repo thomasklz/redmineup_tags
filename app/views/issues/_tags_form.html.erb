@@ -1,0 +1,40 @@
+<div class="<%= 'splitcontentleft' if defined? form %>">
+  <p id="issue_tags">
+    <label><%= l(:tags) %></label>
+    <% issue = Issue.new({:project => issues.first.project}) if defined? issues %>
+    <% text_field_options = {:label => :tags, :size => 60, :class => 'hol'} %>
+    <% tags = defined?(form) ? form.object.tag_list : [] %>
+    <% if defined? form || defined? issues %>
+      <%= select_tag 'issue[tag_list]', options_for_select(tags.map{ |tag| [tag, tag] }, tags), :multiple => true, :style => 'width: 100%' %>
+      <%= hidden_field_tag 'issue[tag_list][]', "" %>
+    <% else %>
+      <%= label_tag :tags, nil, :for => :issue_tag_list  %>
+      <%= text_field_tag 'issue[tag_list]', "", :class => text_field_options[:class], :size => text_field_options[:size], :id => :issue_tag_list %>
+    <% end %>
+  </p>
+</div>
+
+<% content_for :header_tags do %>
+  <%= select2_assets %>
+<% end %>
+
+<%= javascript_tag do %>
+  $(document).ready(function(){
+    $('select#issue_tag_list').select2({
+      ajax: {
+              url: '<%= auto_complete_redmine_tags_path() %>',
+              dataType: 'json',
+              delay: 250,
+              data: function (params) {
+                return { q: params.term };
+              },
+              processResults: function (data, params) {
+                return { results: data };
+              },
+              cache: true
+            },
+      tags: true,
+      placeholder: '<%= params[:action] != 'bulk_edit' ? '+ add tag' : t(:label_no_change_option) %>'
+    });
+  })
+<% end %>
